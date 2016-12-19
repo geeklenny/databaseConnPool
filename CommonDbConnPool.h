@@ -119,10 +119,7 @@ void CommonDbConnPool<T>::PoolConnMonitor(){
 
         [&](){
             unique_lock<mutex> lk(ptrPool->m_mtxCv);
-            if(ptrPool->m_Cv.wait_for(lk, chrono::milliseconds(ptrPool->ulTimeForCheckTimeout())) == cv_status::timeout)
-            {
-                ptrPool->m_bPoolAvailable = false;
-            }
+            ptrPool->m_Cv.wait_for(lk, chrono::milliseconds(ptrPool->ulTimeForCheckTimeout()));
         }();
 
     }
